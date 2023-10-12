@@ -1,0 +1,33 @@
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app">
+
+</div>
+
+<script>
+    const vm = new Vue({
+        //el: '#app', posso subsituir por vm.$mount('#app') 
+        template: `
+            <div>
+                <p> {{ texto1 }} </p>
+                <p> {{ texto2 }} </p>
+                <button @click="alterarAula">Alterar Aula</button>
+                <button @click="alterarModulo">Alterar Módulo</button>    
+            </div>
+        `, // Você também pode trabalhar com gerar html dentro do vue
+        data: {
+            texto1: 'Aula: Usando Refs',
+            texto2: 'Módulo: instância Vue'
+        },
+        methods: {
+            alterarAula(){
+                this.texto1 += '!'
+            },
+            alterarModulo(){
+                this.texto2 += '#'
+            }
+        }
+    })
+    vm.$mount('#app') // aqui a substituição
+</script>

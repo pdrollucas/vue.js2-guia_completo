@@ -1,0 +1,39 @@
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app1">
+    {{ texto1 }}
+    <button @click="alterar">Alterar</button>
+</div>
+<div id="app2">
+    {{ texto2 }}
+    <button @click="alterar">Alterar</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app1',
+        data: {
+            texto1: 'Olá'
+        },
+        methods: {
+            alterar(){
+                this.texto1 += '!!!'
+            },
+        }
+    })
+
+    // Você pode utilizar duas instâncias, mas no geral essa técnica não é utilizada. Há preferencia pela componentização.
+
+    new Vue({
+        el: '#app2',
+        data: {
+            texto2: 'Olá'
+        },
+        methods: {
+            alterar(){
+                this.texto2 += '!!!'
+            },
+        }
+    })
+</script>

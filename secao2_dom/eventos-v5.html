@@ -1,0 +1,46 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app">
+    <p> {{ contador }} </p>
+    <button v-on:click="somar(5, $event)">Somar</button> <!-- $event é uma plavara reservada do vue.js para conseguir pegar o evento que está ocorrendo -->
+    <p v-on:mousemove="atualizarXY">
+        Posição: {{ x }} e {{ y }} 
+        <!--  Duas formas diferentes de fazer a mesma coisa -->
+        <span v-on:mousemove="parar">Parar aqui</span> 
+        <span v-on:mousemove.stop="">Para aqui</span>
+    </p>
+    <a v-on:click.prevent href="https://google.com">Google</a> <!-- prevent serve para tirar o comportamento padrão, nesse caso o link não vai ir pro google -->
+    <a v-on:click="prevenir" href="https://google.com">Google</a>
+    <hr>
+    <input type="text" v-on:keyup.enter.alt="exibirAlerta()"> <!-- ao clicar alt+enter o alerta é exibido -->
+</div>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            contador: 0,
+            x: 0,
+            y: 0,
+        },
+        methods: {
+            somar(passo, e){
+                this.contador += passo
+                console.log(e)
+            },
+            atualizarXY(event){
+                this.x = event.clientX
+                this.y = event.clientY
+            },
+            parar(event){
+                event.stopPropagation()
+            },
+            prevenir(event){
+                event.preventDefault()
+            },
+            exibirAlerta(){
+                alert("Alerta")
+            }
+        }
+    })
+</script>

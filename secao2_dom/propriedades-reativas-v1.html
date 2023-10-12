@@ -1,0 +1,22 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app">
+    <p> {{ titulo }} </p>
+    <input type="text" v-bind:value="titulo" v-on:input="titulo = $event.target.value"> 
+    <!-- 
+        Two way data biding 
+        - v-bind:value="titulo" significa que o valor do input será igual ao valor de titulo; 
+        - v-on:input="titulo = $event.target.value" significa que irá escutar o evento do input e atribuir o valor a variavel título
+    -->
+    <hr>
+    <input type="text" v-model="titulo"> <!-- forma simplificada! -->
+</div>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            titulo: "Começando no Vue.JS !!"
+        }
+    })
+</script>

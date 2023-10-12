@@ -1,0 +1,43 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app">
+    <p> {{ contador }} {{ contador2 }} </p>
+    <p> {{ resultado }} </p>
+    <button v-on:click="aumentar">Aumentar</button>
+    <button v-on:click="contador2++">Aumentar 2</button>
+    <button v-on:click="diminuir">Diminuir</button>
+</div>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            contador: 0,
+            contador2: 0,
+        },
+        computed: {
+            resultado(){
+                console.log("chamando...") // Dessa forma, resultado() só vai ser chamado quando clicar no primeiro aumentar
+                                            // Isso acontece porque essa propriedade já está "salva no sistema"(computada) e só vai ser chamada quando ela for de fato alterada, gerando a sua recomputação.
+                                            // Propriedades computadas são síncronas, você precisa retornar um valor. 
+                return this.contador > 5 ? 
+                    "Maior que cinco" : "Menor que cinco"
+            }
+        },
+        methods: {
+            aumentar(){
+                this.contador++
+            },
+            diminuir(){
+                this.contador--
+            },
+            //resultado(){
+            //    console.log("chamando...") // Dessa forma, resultado() vai ser chamado quando clicar no primeiro aumentar e também quando clicar no segundo. 
+            //                                //O que é estranho já que o segundo não tem nada a ver com o primeiro.
+                                                // Isso acontece porque toda vez que um data for atualizado a página é recarregada e assim o resultado acaba sendo chamado a cada mudança.
+            //    return this.contador > 5 ? 
+            //        "Maior que cinco" : "Menor que cinco"
+            //}
+        }
+    })
+</script>

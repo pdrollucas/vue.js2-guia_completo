@@ -1,0 +1,45 @@
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app1">
+    {{ texto1 }}
+    <button @click="alterar">Alterar</button>
+</div>
+<div id="app2">
+    {{ texto2 }}
+    <button @click="alterar">Alterar</button>
+</div>
+
+<script>
+    const vm1 = new Vue({
+        el: '#app1',
+        data: {
+            texto1: 'Olá'
+        },
+        methods: {
+            alterar(){
+                vm2.texto2 += '???'
+            },
+        }
+    })
+
+    //Posso trabalhar com duas instância em conjunto, uma pegando elementos de outra. 
+    // Quando a sua aplicação trabalha com outro framework e precisa acessar alguns dados do vue, fora isso essa técnica não é comum. 
+
+    const vm2 = new Vue({
+        el: '#app2',
+        data: {
+            texto2: 'Olá'
+        },
+        methods: {
+            alterar(){
+                vm1.texto1 += '***'
+            },
+        }
+    })
+
+    setTimeout(() => {
+        vm1.texto1 = 'Modificado!'
+    }, 4000)
+
+</script>

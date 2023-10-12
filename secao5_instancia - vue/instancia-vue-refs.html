@@ -1,0 +1,30 @@
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<div id="app">
+    <p ref="aulaRef"> {{ texto1 }} </p> <!-- uma forma de acessar o elemento -->
+    <p> {{ texto2 }} </p>
+    <button @click="alterarAula">Alterar Aula</button>
+    <button @click="alterarModulo">Alterar Módulo</button>
+</div>
+
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            texto1: 'Aula: Usando Refs',
+            texto2: 'Módulo: instância Vue'
+        },
+        methods: {
+            alterarAula(){
+                this.texto1 += '!'
+                console.log(this.$refs.aulaRef.innerText) // esse uso do refs é o mais comum, serve para consultar valores de um elemento
+            },
+            alterarModulo(){
+                this.texto2 += '#'
+            }
+        }
+    })
+
+    vm.$refs.aulaRef.innerText = 'Valor alterado diretamente :(' // não é interessante ser feito alterações diretamente
+</script>
