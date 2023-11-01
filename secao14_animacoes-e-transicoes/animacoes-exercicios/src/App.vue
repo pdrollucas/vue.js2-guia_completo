@@ -27,19 +27,111 @@
 			<b-alert variant="info" show v-if="mostrar" key="info">{{ frase }}</b-alert>
 			<b-alert variant="warning" show v-else key="warn">{{ frase }}</b-alert>
 		</transition>
+		<br>
+		<hr>
+		<b-button variant="primary" class="mb-4" @click="exibir2 = !exibir2">Exibir caixa</b-button>
+		<!-- Animações em JavaScript -->
+		<transition
+			:css="false"
+			@before-enter="beforeEnter"
+			@enter="enter"
+			@after-enter="afterEnter"
+			@enter-cancelled="enterCancelled"
+
+			@before-leave="beforeLeave"
+			@leave="leave"
+			@after-leave="afterLeave"
+			@leave-cancelled="leaveCancelled"
+		> <!-- :css="false" serve para previnir o transition de outros transitions com css -->
+			<div class="caixa" v-if="exibir2"></div>
+		</transition>
+		<br>
+		<hr>
+		<div class="mb-4">
+			<b-button variant="primary" class="mr-3" @click="botaoSelecionado = 'AlertaInfo'">Info</b-button>
+			<b-button variant="secondary" @click="botaoSelecionado = 'AlertaAviso'">Aviso</b-button>
+		</div>
+		<transition name="fade" mode="out-in">
+			<component :is="botaoSelecionado"></component>
+		</transition>
+		<br>
+		<hr> <!-- transition-group: transicoes para um grupo de elementos -->
+		<b-button variant="primary" @click="adicionarAluno" class="mb-4 mr-3" >Adicionar aluno</b-button>
+		<transition-group name="slide" tag="div"> <!-- o atributo tag irá gerar todos os elemtnos do transition como divs -->
+			<ul v-for="(aluno, i) in alunos" :key="aluno">
+				<li @click="removerAluno(i)">{{ aluno }}</li>
+			</ul>
+		</transition-group>
+
 	</div>
 </template>
 
 <script>
+import AlertaInfo from './AlertaInfo.vue'
+import AlertaAviso from './AlertaAviso.vue'
 
 export default {
+	components: {AlertaInfo, AlertaAviso},
 	data(){
 		return{
 			frase: 'Mensagem a ser exibida',
 			exibir: true,
 			mostrar: false,
-			tipoAnimacao: 'fade'
+			tipoAnimacao: 'fade',
+			exibir2: false,
+			larguraBase: 0,
+			botaoSelecionado: AlertaInfo,
+			alunos: ['Pedro', 'Paulo', 'Ricardo', 'Ana', 'Maria']
 		}
+	},
+	// animação com javascript
+	methods: {
+		adicionarAluno(){
+			const n = Math.random().toString(36).substring(2)
+			this.alunos.push(n)
+		},
+		removerAluno(indice){
+			this.alunos.splice(indice, 1)
+		},
+		animar(el, done, subtrair){
+			let rodada = 1
+			const temporizador = setInterval(() => {
+				const novaLargura = this.larguraBase + 
+				(subtrair ? - rodada * 10 : rodada * 10)
+				el.style.width = `${novaLargura}px`
+				rodada++
+				if(rodada > 30){
+					clearInterval(temporizador)
+					done()
+				}
+			}, 20)
+		},
+		beforeEnter(el){
+			this.larguraBase = 0
+			el.style.width = `${this.larguraBase}px`
+		},
+		enter(el, done){
+			this.animar(el, done, false)
+		},
+		afterEnter(el){
+			console.log("afterEnter")
+		},
+		enterCancelled(el){
+			console.log("enterCancelled")
+		},
+		beforeLeave(el){
+			this.larguraBase = 300
+			el.style.width = `${this.larguraBase}px`
+		},
+		leave(el, done){
+			this.animar(el, done, true)
+		},
+		afterLeave(el){
+			console.log("afterLeave")
+		},
+		leaveCancelled(el){
+			console.log("leaveCancelled")
+		},
 	}
 }
 </script>
@@ -53,6 +145,7 @@ export default {
 	color: #2c3e50;
 	margin-top: 60px;
 	font-size: 1.5rem;
+	padding-bottom: 2vw;
 }
 
 .fade-enter{
@@ -99,8 +192,21 @@ export default {
 }
 
 .slide-leave-active{
+	width: 100%;
+	position: absolute;
 	animation: slide-out 2s ease;
 	transition: opacity 2s;
+}
+
+.slide-move{
+	transition: transform 1s;
+}
+
+.caixa{
+	margin: 0 auto;
+	height: 100px;
+	width: 300px;
+	background-color: aquamarine;
 }
 
 </style>
