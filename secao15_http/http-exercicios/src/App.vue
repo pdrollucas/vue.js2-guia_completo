@@ -1,6 +1,7 @@
 <template>
 	<div id="app" class="container">
 		<h1>HTTP com Axios</h1>
+		<b-alert show dismissible v-for="mensagem in mensagens" :key="mensagem.texto" :variant="mensagem.tipo">{{ mensagem.texto }}</b-alert>
 		<b-card>
 			<b-form-group label="Nome: ">
 				<b-input type="text" size="lg" v-model="usuario.nome" placeholder="Informe o seu nome">
@@ -22,6 +23,10 @@
 				<strong>Nome: </strong> {{ usuario.nome }} <br>
 				<strong>Email: </strong> {{ usuario.email }} <br>
 				<strong>ID: </strong> {{ id }} <br>
+				<div class="mt-2">
+					<b-button variant="warning" size="lg" @click="alterar(id)">Alterar</b-button>
+					<b-button variant="danger" class="ml-3" size="lg" @click="excluir(id)">Excluir</b-button>
+				</div>
 			</b-list-group-item>
 		</b-list-group>
 	</div>
@@ -37,7 +42,9 @@ export default {
 	// }
 		data(){
 			return{
+				mensagens: [],
 				usuarios: [],
+				id: null,
 				usuario: {
 					nome: '',
 					email: '',
@@ -45,23 +52,65 @@ export default {
 			}
 		},
 		methods: {
-			// post serve para incluir os dados
-			salvar(){
-				this.$http.post('usuarios.json', this.usuario)
-					.then(resp => { // limpa formulário depois de enviado
-						this.usuario.nome = ''
-						this.usuario.email = ''
-					})
+			limpar(){
+				this.usuario.nome = ''
+				this.usuario.email = ''
+				this.id = null,
+				this.mensagens = []
 			},
 
-			// get serve para pegar os dados
+			// post serve para incluir os dados    --- como se fosse um CREATE
+			/*salvar(){
+				this.$http.post('usuarios.json', this.usuario)
+					.then(() => this.limpar())
+			},*/
+			//salva ou edita com base na existência ou não do id
+			salvar(){
+				const metodo = this.id ? 'patch' : 'post'
+				const finalURL = this.id ? `/${this.id}.json` : '.json'
+				this.$http[metodo](`/usuarios${finalURL}`, this.usuario).then(() => {
+					this.limpar()
+					this.mensagens.push({
+						texto: "Operação realizada com sucesso!",
+						tipo: 'success'
+					})	
+				})
+			},
+
+			// get serve para pegar os dados    --- como se fosse um READ
 			//posso tanto escrever "this.$http.get()" como também "this.$http()"
 			obterUsuarios(){
 				this.$http.get('usuarios.json').then(res => {
 					this.usuarios = res.data
 					console.log(this.usuarios)
 				})
+			},
+
+			//
+			alterar(id){
+				this.id = id
+				this.usuario = { ...this.usuarios[id] }
+			},
+
+			//
+			excluir(id){
+				this.$http.delete(`/usuarios/${id}.json`)
+					.then(() => {
+						this.limpar()
+						this.mensagens.push({
+							mensagem: 'Operação realizada com sucesso',
+							tipo: 'success'
+						})
+					})
+					.catch(() => {
+						this.limpar()
+						this.mensagens.push({
+							texto: "Problema ao realizar operação :(",
+							tipo: 'danger'
+						})
+					})
 			}
+
 		}
 }
 </script>

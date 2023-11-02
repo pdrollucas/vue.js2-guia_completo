@@ -7,7 +7,28 @@ Vue.use({
     install(Vue){
         //Vue.prototype.$http = axios
         Vue.prototype.$http = axios.create({
-            baseURL: 'https://curso-udemy-vue-510ae-default-rtdb.firebaseio.com/'
+            baseURL: 'https://curso-udemy-vue-510ae-default-rtdb.firebaseio.com/',
+            headers: { // depois do login você recebe um token e esse token você coloca no authorization e aí você consegue passar pelo filtro de segurança
+                "Authorization": 'abc123'
+            }
         })
+
+        //interceptando requisições
+        Vue.prototype.$http.interceptors.request.use(config => {
+            console.log(config.method)
+            return config
+        }, error => Promise.reject(error))
+
+        //interceptando resposta
+        // isso transforma o id do usuário em 1, 2, 3, 4 ao invés de ids aleatórios do firebase
+            
+            // Vue.prototype.$http.interceptors.response.use(res => {
+            //     const array = []
+            //     for(let chave in res.data){
+            //         array.push({id: chave, ...res.data[chave]})
+            //     }
+            //     res.data = array
+            //     return res
+            // }, error => Promise.reject(error))
     }
 })
