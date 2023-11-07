@@ -2,12 +2,18 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Inicio from './components/Inicio.vue'
 
-import Usuario from './components/usuario/Usuario.vue'
-import UsuarioLista from './components/usuario/UsuarioLista'
-import UsuarioDetalhe from './components/usuario/UsuarioDetalhe'
-import UsuarioEditar from './components/usuario/UsuarioEditar'
+//import Usuario from './components/usuario/Usuario.vue'
+//import UsuarioLista from './components/usuario/UsuarioLista'
+//import UsuarioDetalhe from './components/usuario/UsuarioDetalhe'
+//import UsuarioEditar from './components/usuario/UsuarioEditar'
 
 Vue.use(Router)
+
+//Forma de carregar rotas tardiamente/sob demanda, evitando carregamento desnecessário (importante em aplicações que são grandes)
+const Usuario = () => import(/* webpackChunkName: 'usuario' */"./components/usuario/Usuario") // webpackChunkName serve para nomear como o arquivo vai ficar no console
+const UsuarioLista = () => import(/* webpackChunkName: 'usuarioLista' */ "./components/usuario/UsuarioLista")
+const UsuarioDetalhe = () => import(/* webpackChunkName: 'usuarioDetalhe' */'./components/usuario/UsuarioDetalhe')
+const UsuarioEditar = () => import(/* webpackChunkName: 'usuarioEditar' */ './components/usuario/UsuarioEditar')
 
 const router = new Router({
     mode: 'history',

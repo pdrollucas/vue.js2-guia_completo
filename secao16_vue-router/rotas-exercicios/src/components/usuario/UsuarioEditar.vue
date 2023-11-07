@@ -5,7 +5,7 @@
         <p><strong>Completo: </strong>{{ $route.query.completo ? 'Sim' : 'Não' }}</p>
         <p><strong>Língua: </strong>{{ $route.query.lingua }}</p>
         <hr>
-        <button primario>Confirmar</button>
+        <button primario @click="confirmou = true">Confirmar</button>
         <div id="rodape">
             <h3>Rodape navegavel por hash</h3>
         </div>
@@ -14,7 +14,23 @@
 
 <script>
     export default{
-        props: ['id']
+        props: ['id'],
+        data(){
+            return{
+                confirmou: false
+            }
+        },
+        beforeRouteLeave(to, from, next){ // só irá aceitar ir para outra página se o usuário clicar em confirmar ou ter a certeza que quer voltar
+            if(this.confirmou){
+                next()
+            } else {
+                if(confirm('Tem certeza?')){
+                    next()
+                } else{
+                    next(false)
+                }
+            }
+        }
     }
 </script>
 
