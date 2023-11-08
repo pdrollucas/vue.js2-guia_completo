@@ -1,4 +1,6 @@
 export default{
+    namespaced: true, // para garantir que precisa ser chamado pelo nome, evitando confusões de nomes repetidos
+
     state: { // state representa o estado compartilhado da aplicação
         produtos: [],
     },

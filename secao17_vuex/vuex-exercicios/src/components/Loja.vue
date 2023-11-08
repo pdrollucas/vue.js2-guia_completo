@@ -30,7 +30,9 @@ export default {
     },
     methods: {
         //...mapMutations(['adicionarProduto']), //alterando via método - parte 1
-        ...mapActions(['adicionarProduto']),
+        
+        //...mapActions(['adicionarProduto']), -- assim é como fica sem o namespaced
+        ...mapActions('carrinho', ['adicionarProduto']), // assim é como fica com namespaced
        
         /* mesma coisa que o de cima ^
         adicionarProduto(produto){

@@ -31,7 +31,7 @@ import {mapGetters} from 'vuex'
 export default {
     computed: {
         //pegando o valor via getter
-        ...mapGetters({
+        ...mapGetters('carrinho', {
             total: 'valorTotal'
         }),
 

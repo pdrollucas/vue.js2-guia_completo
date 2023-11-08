@@ -12,10 +12,18 @@
 import {mapGetters} from 'vuex'
 
 export default {
-
+    
+    /* assim é como fica sem o namespaced
     computed: mapGetters({
         total: 'valorTotal'
+    })
+    */ 
+
+    //assim é como fica com o namespaced
+    computed: mapGetters('carrinho', {
+        total: 'valorTotal'
     }) 
+
     /* duas formas diferentes de fazer
     
     computed: {
