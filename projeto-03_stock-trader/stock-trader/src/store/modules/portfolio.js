@@ -24,27 +24,31 @@ export default{
                 state.stocks.splice(state.stocks.indexOf(record), 1) // vender tudo (removendo um elemento do array)
             }
             state.funds += stockPrice * quantity // ajustar o saldo para refletir a venda
+        },
+        setPortfolio(state, portfolio){
+            state.funds = portfolio.funds
+            state.stocks = portfolio.stockPortfolio ? portfolio.stockPortfolio : []
         }
     },
     actions: {
         sellStock({commit}, order){
             commit('sellStock', order) // chamando a mutation
         },
-        getters: {
-            stockPortfolio(state, getters){ // vai retornar todas as ações que tenho
-                return state.stocks.map(stock => {
-                    const record = getters.stocks.find(element => element.id == stock.id) // precisa usar o getters para pegar do stocks/modules (é ele que tem todas as informações de uma ação)
-                    return { // ajustado para exibir todas as características de uma ação e não só o Id e a quantidade
-                        id: stock.id,
-                        quantity: stock.quantity,
-                        name: record.name, // nova informação
-                        price: record.price // nova informação
-                    }
-                })
-            },
-            funds(state){ // obter o estado do saldo, o valor que o usuário possui
-                return state.funds
-            }
+    },
+    getters: {
+        stockPortfolio(state, getters){ // vai retornar todas as ações que tenho
+            return state.stocks.map(stock => {
+                const record = getters.stocks.find(element => element.id == stock.id) // precisa usar o getters para pegar do stocks/modules (é ele que tem todas as informações de uma ação)
+                return { // ajustado para exibir todas as características de uma ação e não só o Id e a quantidade
+                    id: stock.id,
+                    quantity: stock.quantity,
+                    name: record.name, // nova informação
+                    price: record.price // nova informação
+                }
+            })
+        },
+        funds(state){ // obter o estado do saldo, o valor que o usuário possui
+            return state.funds
         }
     }
 }
